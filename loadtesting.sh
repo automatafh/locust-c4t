@@ -1,0 +1,1 @@
+lucust -f test.py --host https://catfact.ninja/ --users 500 --spawn-rate 20
