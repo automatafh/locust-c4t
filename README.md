@@ -36,7 +36,7 @@ In the web interface set:
 - Number of users
 - Spawn rate
 - Host
-    For this exple set: https://catfact.ninja
+    For this example set: https://catfact.ninja
 
 And click "Start swarming" Button
 ```
