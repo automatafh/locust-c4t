@@ -1,1 +1,1 @@
-lucust -f test.py --host https://catfact.ninja/ --users 500 --spawn-rate 20
+locust -f test.py --host http://127.0.0.1:55338/ext/bc/C/rpc --users 1 --spawn-rate 20
