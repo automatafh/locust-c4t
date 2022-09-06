@@ -4,8 +4,8 @@ from web3 import Web3, HTTPProvider
 
 
 class Sender:
-    address_from = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-    contract_address = "0x04e61318095bcac3b4F186469598bd4dCCb23621"
+    address_from = ""
+    contract_address = "0xF410140aDbC61f985eCa89bd9A31578Aa6887d13"
     gas_price = 50000000000
     gas_limit = 21216
 
@@ -52,7 +52,7 @@ class Sender:
                 'to': self.contract_address,
                 'value': self.web3.toHex(0),
                 'data': data,
-                'chainId': 43112
+                'chainId': 502
             }
 
             # use web3 to sign transaction
@@ -64,8 +64,6 @@ class Sender:
             # get transaction hash
             get_transaction_hash = self.web3.toHex(send_transaction_hash)
             receipt = self.web3.eth.wait_for_transaction_receipt(get_transaction_hash, timeout=500)
-            print(receipt.status)
-            request_meta["response"] = receipt
 
         except Exception as e:
             request_meta["exception"] = e

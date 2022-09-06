@@ -7,7 +7,7 @@ def send_tx_x_chain():
 
     request_meta = {
         "request_type": "xmlrpc",
-        "name": "Cchain",
+        "name": "Xchain",
         "start_time": time.time(),
         "response_length": 0,  # calculating this for an xmlrpc.client response would be too hard
         "response": None,
