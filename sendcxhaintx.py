@@ -1,22 +1,18 @@
 import json
 import time
-from web3 import Web3, HTTPProvider
-
 
 class Sender:
-    address_from = ""
-    contract_address = "0xF410140aDbC61f985eCa89bd9A31578Aa6887d13"
-    gas_price = 50000000000
-    gas_limit = 21216
 
-    def __init__(self, web3, nonce, private_key, address_from, request_event):
+    contract_address = "0xF410140aDbC61f985eCa89bd9A31578Aa6887d13"
+
+    def __init__(self, web3, nonce, private_key, address_from, chainId, request_event):
         self._request_event = request_event
         self.web3 = web3
         self.private_key = private_key
         self.address_from = address_from
         self.nonce = nonce
+        self.chainId = chainId
 
-    # <editor-fold desc="Send BC Transaction">
     # python function to send a transaction to the blockchain
 
     def send_tx(self):
@@ -52,11 +48,11 @@ class Sender:
                 'to': self.contract_address,
                 'value': self.web3.toHex(0),
                 'data': data,
-                'chainId': 502
+                'chainId': self.chainId
             }
 
             # use web3 to sign transaction
-            signed_transaction = self.web3.eth.account.signTransaction(transaction_data, "0x" + self.private_key)
+            signed_transaction = self.web3.eth.account.signTransaction(transaction_data, self.private_key)
 
             # send signed transaction to the network
             send_transaction_hash = self.web3.eth.sendRawTransaction(signed_transaction.rawTransaction)
@@ -75,8 +71,3 @@ class Sender:
         print("account ", str(self.address_from) + " - " + str(self.nonce))
         return request_meta
 
-    # </editor-fold>
-
-    # This is commented out
-    def send_x_chain_transaction(self):
-        pass

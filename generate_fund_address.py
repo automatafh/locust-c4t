@@ -3,7 +3,7 @@ from web3 import Web3, HTTPProvider
 rpc_node = "https://columbus.camino.foundation/ext/bc/C/rpc"
 web3 = Web3(HTTPProvider(rpc_node))
 
-private_key = '981248d80aee4ee030a17b285306ceb84e641f02ad48f86de43c7502dda340c0'
+private_key = ''
 account_from = web3.eth.account.privateKeyToAccount(private_key)
 
 for n in range(10):
@@ -18,7 +18,7 @@ for n in range(10):
         'to': address_to.address,
         'from': account_from.address,
         'value': web3.toWei(1, 'ether'),
-        'chainId': 502
+        'chainId': 43112
     }
 
     signed_transaction = web3.eth.account.signTransaction(transaction_data, "0x" + private_key)
