@@ -1,6 +1,4 @@
 #<editor-fold desc="Transaction Data">   
-from threading import TIMEOUT_MAX
-
 
 DEFAUL_ADDRESS_WITH_FUNDS = "17c2483a699da91af4da72792e137c1547738740011b5435b1f43ea75cb7ddb9"
 CHAIN_ID = 502
