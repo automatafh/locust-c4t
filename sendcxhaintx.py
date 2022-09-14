@@ -1,25 +1,26 @@
 import json
 import time
+import config.config_c_chain as config
 
 class Sender:
 
-    contract_address = "0xF410140aDbC61f985eCa89bd9A31578Aa6887d13"
+    contract_address = config.CONTRACT_ADDRESS
 
-    def __init__(self, web3, nonce, private_key, address_from, chainId, request_event):
+    def __init__(self, web3, nonce, private_key, address_from, chain_id, request_event):
         self._request_event = request_event
         self.web3 = web3
         self.private_key = private_key
         self.address_from = address_from
         self.nonce = nonce
-        self.chainId = chainId
+        self.chain_id = chain_id
 
     # python function to send a transaction to the blockchain
 
     def send_tx(self):
 
         request_meta = {
-            "request_type": "xmlrpc",
-            "name": "Cchain",
+            "request_type": config.REQUEST_TYPE,
+            "name": config.NAME,
             "start_time": time.time(),
             "response_length": 0,  # calculating this for an xmlrpc.client response would be too hard
             "response": None,
@@ -41,14 +42,14 @@ class Sender:
             # with EIP1559 It is not necessary to send the gas price and gas limit.
             transaction_data = {
                 'nonce': self.nonce,
-                'maxFeePerGas': 50000000000,
-                'maxPriorityFeePerGas': 1000000000,
-                'gas': 100000,
+                'maxFeePerGas': config.MAX_FEE_PER_GAS,
+                'maxPriorityFeePerGas': config.MAX_PRIORITY_FEE_PER_GAS,
+                'gas': config.GAS,
                 'from': self.address_from,
                 'to': self.contract_address,
                 'value': self.web3.toHex(0),
                 'data': data,
-                'chainId': self.chainId
+                'chainId': self.chain_id
             }
 
             # use web3 to sign transaction
@@ -59,7 +60,7 @@ class Sender:
 
             # get transaction hash
             get_transaction_hash = self.web3.toHex(send_transaction_hash)
-            receipt = self.web3.eth.wait_for_transaction_receipt(get_transaction_hash, timeout=500)
+            self.web3.eth.wait_for_transaction_receipt(get_transaction_hash, timeout=config.TIMEOUT)
 
         except Exception as e:
             request_meta["exception"] = e

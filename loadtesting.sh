@@ -1,1 +1,1 @@
-locust --config=test_c_chain_local.conf
+locust --config=test_c_chain_coper.conf
