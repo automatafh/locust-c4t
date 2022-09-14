@@ -10,7 +10,7 @@ class CChainLocustTest(HttpUser):
     chain_id = config.CHAIN_ID
 
     #account with funds used to send funds to the new accounts, by the default is the ewoq account.
-    default_address_with_funds = config.DEFAUL_ADDRESS_WITH_FUNDS
+    default_address_with_funds = config.DEFAULT_ADDRESS_WITH_FUNDS
     
     #Locust creates an instance of this class for each simulated user that is to be spawned.
     def __init__(self, environment):
