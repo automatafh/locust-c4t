@@ -1,7 +1,6 @@
 #<editor-fold desc="Transaction Data">   
 
-DEFAULT_ADDRESS_WITH_FUNDS = "17c2483a699da91af4da72792e137c1547738740011b5435b1f43ea75cb7ddb9"
-CHAIN_ID = 502
+CHAIN_ID = 43112
 MAX_FEE_PER_GAS = 50000000000
 MAX_PRIORITY_FEE_PER_GAS = 1000000000
 GAS =1000000
@@ -9,7 +8,7 @@ TOWEI_VALUE = 'ether'
 #</editor-fold>
 
 #<editor-fold desc="Data sendcxhain file">
-CONTRACT_ADDRESS = "0xCFB9f3434E00827cD28db2a1e995399B1aD693D9"
+CONTRACT_ADDRESS = "0xcB0754cB8313E7688834c893B70437b2893FfeA1"
 TIMEOUT = 500
 
 
@@ -17,4 +16,4 @@ TIMEOUT = 500
 REQUEST_TYPE = "xmlrpc"
 NAME = "Cchain"
 
-# #</editor-fold> 
+# </editor-fold> 

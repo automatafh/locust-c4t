@@ -1,1 +1,0 @@
-locust --config=test_c_chain_coper.conf

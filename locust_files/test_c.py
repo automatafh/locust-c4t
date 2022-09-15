@@ -1,16 +1,29 @@
 import time
-from locust import HttpUser, task, between
+from locust import HttpUser, task, between, events
 from sendcxhaintx import Sender
 from web3 import Web3, HTTPProvider
 import random
 import config.config_c_chain as config
+import configparser
+
+@events.init_command_line_parser.add_listener
+def _(parser):
+    parser.add_argument("--default_address_with_funds", type=str, env_var="LOCUST_MY_ARGUMENT", default="", help="It's working")
+    # Set `include_in_web_ui` to False if you want to hide from the web UI
+    parser.add_argument("--my-ui-invisible-argument", include_in_web_ui=False, default="I am invisible")
+
+@events.test_start.add_listener
+def _(environment, **kw):
+    print(f"Custom argument supplied: {environment.parsed_options.my_argument}")
+
 
 class CChainLocustTest(HttpUser):
 
+    conf = configparser.ConfigParser()
     chain_id = config.CHAIN_ID
 
     #account with funds used to send funds to the new accounts, by the default is the ewoq account.
-    default_address_with_funds = config.DEFAULT_ADDRESS_WITH_FUNDS
+    default_address_with_funds = ''
     
     #Locust creates an instance of this class for each simulated user that is to be spawned.
     def __init__(self, environment):
@@ -21,17 +34,19 @@ class CChainLocustTest(HttpUser):
 
         # initialize web3
         self.web3 = Web3(HTTPProvider(self.rpc_node))
-
+        self.default_address_with_funds = environment.parsed_options.default_address_with_funds
         #load account with private key
         self.account_with_funds = self.web3.eth.account.privateKeyToAccount(self.default_address_with_funds)
 
         #create new account using web3
         account = self.web3.eth.account.create()
+        print("Account created: " + account.address)
         self.send_funds(account)
 
         self.nonce = self.web3.eth.getTransactionCount(account.address)
         self.client = Sender(self.web3, self.nonce, account.privateKey.hex(), account.address, self.chain_id, 
         request_event=environment.events.request)
+        
 
     @task
     def send_c_chain_tx(self):
