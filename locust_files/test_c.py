@@ -17,6 +17,9 @@ def _(environment, **kw):
     print(f"Custom argument supplied: {environment.parsed_options.my_argument}")
 
 
+read_accounts = open("locust_files/accounts.txt","r")
+accounts =  read_accounts.readlines()
+
 class CChainLocustTest(HttpUser):
 
     conf = configparser.ConfigParser()
@@ -24,7 +27,7 @@ class CChainLocustTest(HttpUser):
 
     #account with funds used to send funds to the new accounts, by the default is the ewoq account.
     default_address_with_funds = ''
-    
+
     #Locust creates an instance of this class for each simulated user that is to be spawned.
     def __init__(self, environment):
         super().__init__(environment)
@@ -34,19 +37,16 @@ class CChainLocustTest(HttpUser):
 
         # initialize web3
         self.web3 = Web3(HTTPProvider(self.rpc_node))
-        self.default_address_with_funds = environment.parsed_options.default_address_with_funds
+        # self.default_address_with_funds = environment.parsed_options.default_address_with_funds
         #load account with private key
-        self.account_with_funds = self.web3.eth.account.privateKeyToAccount(self.default_address_with_funds)
-
         #create new account using web3
-        account = self.web3.eth.account.create()
+        account = self.web3.eth.account.privateKeyToAccount(accounts.pop())
         print("Account created: " + account.address)
-        self.send_funds(account)
 
         self.nonce = self.web3.eth.getTransactionCount(account.address)
-        self.client = Sender(self.web3, self.nonce, account.privateKey.hex(), account.address, self.chain_id, 
+        self.client = Sender(self.web3, self.nonce, account.privateKey.hex(), account.address, self.chain_id,
         request_event=environment.events.request)
-        
+
 
     @task
     def send_c_chain_tx(self):
