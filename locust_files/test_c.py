@@ -14,11 +14,11 @@ def _(parser):
 
 @events.test_start.add_listener
 def _(environment, **kw):
-    print(f"Custom argument supplied: {environment.parsed_options.my_argument}")
+    print(f"Custom argument supplied: {environment.parsed_options.default_address_with_funds}")
 
 
-read_accounts = open("locust_files/accounts.txt","r")
-accounts =  read_accounts.readlines()
+# read_accounts = open("locust_files/accounts.txt","r")
+# accounts =  read_accounts.readlines()
 
 class CChainLocustTest(HttpUser):
 
@@ -37,12 +37,14 @@ class CChainLocustTest(HttpUser):
 
         # initialize web3
         self.web3 = Web3(HTTPProvider(self.rpc_node))
-        # self.default_address_with_funds = environment.parsed_options.default_address_with_funds
+        self.default_address_with_funds = environment.parsed_options.default_address_with_funds
         #load account with private key
+        self.account_with_funds = self.web3.eth.account.privateKeyToAccount(self.default_address_with_funds)
         #create new account using web3
-        account = self.web3.eth.account.privateKeyToAccount(accounts.pop())
+        account = self.web3.eth.account.create()
+        #account = self.web3.eth.account.privateKeyToAccount(accounts.pop())
         print("Account created: " + account.address)
-
+        self.send_funds(account)
         self.nonce = self.web3.eth.getTransactionCount(account.address)
         self.client = Sender(self.web3, self.nonce, account.privateKey.hex(), account.address, self.chain_id,
         request_event=environment.events.request)
@@ -51,8 +53,9 @@ class CChainLocustTest(HttpUser):
     @task
     def send_c_chain_tx(self):
         result = self.client.send_tx()
-        # autoincrement nonce
+        #autoincrement nonce
         return result
+
 
     def send_funds(self, account):
 
