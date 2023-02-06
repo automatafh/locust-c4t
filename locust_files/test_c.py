@@ -9,7 +9,7 @@ class CChainLocustTest(HttpUser):
     chainId = 502
 
     #account with funds used to send funds to the new accounts, by the default is the ewoq account.
-    default_address_with_funds = "56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027"
+    default_address_with_funds = "7a14fdf6bb1d53e28384f70209280dd8848bdc96b5f9eb7fdde9fcddc7ef1a0d"
     
     #Locust creates an instance of this class for each simulated user that is to be spawned.
     def __init__(self, environment):
@@ -28,8 +28,7 @@ class CChainLocustTest(HttpUser):
         account = self.web3.eth.account.create()
         self.send_funds(account)
 
-        self.nonce = self.web3.eth.getTransactionCount(account.address)
-        self.client = Sender(self.web3, self.nonce, account.privateKey.hex(), account.address, self.chainId, request_event=environment.events.request)
+        self.client = Sender(self.web3, account.privateKey.hex(), account.address, self.chainId, request_event=environment.events.request)
 
     @task
     def send_c_chain_tx(self):

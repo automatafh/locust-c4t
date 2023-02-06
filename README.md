@@ -1,25 +1,30 @@
-# Readme
+# Read me
 
-- when creating a local blockchain by default will be a wallet with enough funds to create the users.
+- when creating a local blockchain by default a wallet will be created with enough funds to create users.
 
-for each user the script automatically will create and address and send 1 AVAX to run the transactions.
+## Description
+the test_c.py file contains the funding transaction, where the desired value to send to the accounts to be created is defined.
+in this same file in line 12 is defined the main private key from which funds will be sent to the accounts initially created.
+then in the file sendcxhaintx.py is the transaction that will be executed repeatedly to create network load.
+these transactions are executed from one account to the same account then you must make sure that the initial offers sent are sufficient to complete your tests.
 
 ## Requirements
 
-- Network Runner running
+- Local node running on port 9650
 - Python >= 3.7 
  
 ## Configuration 
 
-On locust_files/test_c.py
+In locust_files/test_c.py
 
-- Deploy "SimpleContract" and set contract address
-- Set the Private Key With the funds to create the Users.
+- Deploy "SimpleContract" and set the contract address.
+- Set the private key with the funds to create the users.
+- In the transaction found in this file set the initial value of funds to be transferred to each of the accounts.
 
-On test_c_chain_local.conf
-    
-- set the RPC node and the users, these parameters will load by default.
+In test_c_chain_coper.conf
+
+- set the RPC node and the users, these parameters will be loaded by default.
 
 ## Execution
 
- execute bash script loadtesting.sh, Locust will create a server on 8089
+ run the bash script loadtesting.sh, Locust will create a server on 8089
